@@ -15,6 +15,6 @@ def read_fastapi_hello():
     return {"Hello":"fast"}
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id : int, q : Optional[str] = None):
-    return{"item_id":item_id, "q":q}
+@app.get("/items/{item_id}/{xyz}")
+def read_item(item_id : int, xyz : str, q : Optional[str] = None):
+    return{"item_id":item_id, "q":q, "xyz":xyz}
