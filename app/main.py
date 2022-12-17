@@ -1,20 +1,39 @@
 from typing import Optional
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+# from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from pathlib import Path
+
+
+BASE_DIR = Path(__file__).resolve().parent
+
+print(BASE_DIR)
+
 
 app = FastAPI()
 
+# app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory=BASE_DIR/"templates")
 
-@app.get("/")
-def read_root():
-    return {"Hello":"World"}
-
-
-@app.get("/hello")
-def read_fastapi_hello():
-    print("hello world")
-    return {"Hello":"fast"}
+@app.get("/", response_class=HTMLResponse)
+async def root(request:Request):
+    # print(request["headers"])
+    return templates.TemplateResponse("./index.html", {"request":request, "title":"콜렉터 북북이"})
 
 
-@app.get("/items/{item_id}/{xyz}")
-def read_item(item_id : int, xyz : str, q : Optional[str] = None):
-    return{"item_id":item_id, "q":q, "xyz":xyz}
+@app.get("/search", response_class=HTMLResponse)
+async def search(request:Request, q:str):
+    print(q)
+    # print(request["headers"])
+    return templates.TemplateResponse("./index.html", {"request":request, "title":"콜렉터 북북이", "keyword":q})
+
+
+
+
+# @app.get("/items/{id}", response_class=HTMLResponse)
+# async def read_time(request:Request, id:str,  data:Optional[str]=None):
+#     # print(request["headers"])
+#     return templates.TemplateResponse("./item.html", {"request":request, "id":id, "data":data})
+
+
