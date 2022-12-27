@@ -8,6 +8,8 @@ fastapi = "*"
 uvicorn = "*"
 jinja2 = "*"
 aiofiles = "*"
+odmantic = "*"
+pymongo = {extras = ["srv"], version = "*"}
 
 [dev-packages]
 
